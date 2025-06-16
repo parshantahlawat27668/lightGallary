@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import bcrypt from "bcrypt"
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -7,7 +8,6 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: [true, "Email ID is required"],
         lowercase: true,
         unique: true,
         trim:true
@@ -15,18 +15,20 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, "Password is Required"],
+        trim:true,
         minlength: 6,
         select: false
     },
     phone: {
         type: String,
-        default: ""
+        default: "",
+        trim:true
     },
     address: {
-        street: String,
-        city: String,
-        state: String,
-        postalCode: String,
+        street: {type:String, default:"", trim:true},
+        city:{type:String, default:"", trim:true},
+        state:{type:String, default:"", trim:true},
+        postalCode:{type:String, default:"", trim:true},
         country: {
             type: String,
             default: "India"
@@ -59,7 +61,8 @@ const userSchema = new mongoose.Schema({
     ],
     refreshToken:{
       type:String,
-      default:""
+      default:"",
+      select:false
     }
 },
 
@@ -67,5 +70,15 @@ const userSchema = new mongoose.Schema({
         timestamps: true
     }
 );
+userSchema.pre("save", async function (next) {
+    if(this.isModified("password") && this.password){
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+    next();
+});
+userSchema.methods.isPasswordCorrect = async function (password){
+return await bcrypt.compare(password, this.password);
+}
+
 const User = mongoose.model("User", userSchema);
 export default User;

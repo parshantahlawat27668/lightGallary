@@ -3,7 +3,9 @@ import React from 'react'
 const App = () => {
   return (
     <div>
-      Frontend
+      <h1>
+        Frontend
+      </h1>
     </div>
   )
 }
