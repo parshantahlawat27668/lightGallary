@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -9,26 +10,28 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         lowercase: true,
-        unique: true,
-        trim:true
+        trim: true,
+        unique:true,
+        sparse:true
     },
     password: {
         type: String,
         required: [true, "Password is Required"],
-        trim:true,
+        trim: true,
         minlength: 6,
         select: false
     },
     phone: {
         type: String,
-        default: "",
-        trim:true
+        unique:true,
+        required:[true,"Phone no. is Required"],
+        trim: true
     },
     address: {
-        street: {type:String, default:"", trim:true},
-        city:{type:String, default:"", trim:true},
-        state:{type:String, default:"", trim:true},
-        postalCode:{type:String, default:"", trim:true},
+        street: { type: String, default: "", trim: true },
+        city: { type: String, default: "", trim: true },
+        state: { type: String, default: "", trim: true },
+        postalCode: { type: String, default: "", trim: true },
         country: {
             type: String,
             default: "India"
@@ -52,17 +55,17 @@ const userSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Product"
         },
-        quantity:{
-            type:Number,
-            default:1
+        quantity: {
+            type: Number,
+            default: 1
         },
-        price:Number
+        price: Number
     }
     ],
-    refreshToken:{
-      type:String,
-      default:"",
-      select:false
+    refreshToken: {
+        type: String,
+        default: "",
+        select: false
     }
 },
 
@@ -71,13 +74,35 @@ const userSchema = new mongoose.Schema({
     }
 );
 userSchema.pre("save", async function (next) {
-    if(this.isModified("password") && this.password){
+    if (this.isModified("password") && this.password) {
         this.password = await bcrypt.hash(this.password, 10);
     }
     next();
 });
-userSchema.methods.isPasswordCorrect = async function (password){
-return await bcrypt.compare(password, this.password);
+userSchema.methods.isPasswordCorrect = async function (password) {
+    return await bcrypt.compare(password, this.password);
+}
+
+userSchema.methods.generateAccessToken = async function () {
+    return  jwt.sign({
+        _id: this._id,
+        role: this.role
+    },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+    )
+}
+userSchema.methods.generateRefreshToken = async function(){
+   return  jwt.sign(
+    {
+        _id:this._id,
+        role:this.role
+    },
+    process.env.REFRESH_TOKEN_SECRET,
+    {
+        expiresIn:process.env.REFRESH_TOKEN_EXPIRY
+    }
+   ) 
 }
 
 const User = mongoose.model("User", userSchema);
