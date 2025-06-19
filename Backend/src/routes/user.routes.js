@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { changeUserPassword, getCurrentUser, loginUser, logoutUser, refreshAccessToken, registerAdmin, registerUser } from "../controllers/user.controller.js";
+import { changeUserPassword, deleteAccount, getCurrentUser, loginUser, logoutUser, refreshAccessToken, registerAdmin, registerUser, updateUserAccountDetails } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { authRoles } from "../middlewares/authRoles.middleware.js";
 const router = Router();
@@ -11,6 +11,8 @@ router.route("/login").post(loginUser);
 router.route("/logout").post(verifyJWT,logoutUser);
 router.route("/refresh-token").post(verifyJWT,refreshAccessToken);
 router.route("/change-password").post(verifyJWT,changeUserPassword);
+router.route("/update-user-details").patch(verifyJWT,updateUserAccountDetails);
+router.route("/delete-account").delete(verifyJWT,deleteAccount);
 
 
 // Role based Routes

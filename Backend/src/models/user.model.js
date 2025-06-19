@@ -7,13 +7,26 @@ const userSchema = new mongoose.Schema({
         required: [true, "Name is required"],
         trim: true
     },
-    email: {
+    email:{ 
+    id:{
         type: String,
         lowercase: true,
         trim: true,
-        unique:true,
-        sparse:true
+        unique: true,
+        sparse: true,
+        validate:{
+            validator:function(v){
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+            },
+            message:"Invalid email id"
+        },
+        
     },
+    isVerified:{
+        type:Boolean,
+        default:false
+    }
+},
     password: {
         type: String,
         required: [true, "Password is Required"],
@@ -22,10 +35,22 @@ const userSchema = new mongoose.Schema({
         select: false
     },
     phone: {
-        type: String,
-        unique:true,
-        required:[true,"Phone no. is Required"],
-        trim: true
+        number: {
+            type: String,
+            unique: true,
+            required: [true, "Phone no. is Required"],
+            trim: true,
+            validate: {
+                validator: function (v) {
+                    return /^[6-9]\d{9}$/.test(v);
+                },
+                message: "Invalid phone number"
+            }
+        },
+        isVerified:{
+            type:Boolean,
+            default:false
+        }
     },
     address: {
         street: { type: String, default: "", trim: true },
@@ -84,7 +109,7 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 }
 
 userSchema.methods.generateAccessToken = async function () {
-    return  jwt.sign({
+    return jwt.sign({
         _id: this._id,
         role: this.role
     },
@@ -92,17 +117,17 @@ userSchema.methods.generateAccessToken = async function () {
         { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
     )
 }
-userSchema.methods.generateRefreshToken = async function(){
-   return  jwt.sign(
-    {
-        _id:this._id,
-        role:this.role
-    },
-    process.env.REFRESH_TOKEN_SECRET,
-    {
-        expiresIn:process.env.REFRESH_TOKEN_EXPIRY
-    }
-   ) 
+userSchema.methods.generateRefreshToken = async function () {
+    return jwt.sign(
+        {
+            _id: this._id,
+            role: this.role
+        },
+        process.env.REFRESH_TOKEN_SECRET,
+        {
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY
+        }
+    )
 }
 
 const User = mongoose.model("User", userSchema);

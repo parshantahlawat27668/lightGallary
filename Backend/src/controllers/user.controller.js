@@ -3,6 +3,8 @@ import { apiError } from "../utils/apiError.js"
 import { apiResponse } from "../utils/apiResponse.js"
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken"
+import { json } from "express";
+import { emailValidator, phoneValidator } from "../utils/validator.js";
 
 // Token genearate 
 const tokenGenerater = async (user) => {
@@ -19,11 +21,12 @@ const tokenGenerater = async (user) => {
 
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password, phone } = req.body;
-    if (!(name && password && phone)) {
+     if (!(name && password && phone)) {
         throw new apiError(400, "Please fill in all required details.");
     }
-
-    const isUserExist = await User.findOne({ phone });
+    if(email?.id) emailValidator(email.id);
+    if(phone?.number) phoneValidator(phone.number);
+    const isUserExist = await User.findOne({ "phone.number":phone.number });
     if (isUserExist) {
         throw new apiError(409, "User already exists with email or phone");
     }
@@ -37,7 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
         });
     } catch (error) {
         console.log(error);
-        throw new apiError(400, "Somthing went wrong while registering user");
+        throw new apiError(400,"Somthing went wrong while registering user");
     }
 
 
@@ -62,11 +65,13 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
     const { email, phone, password } = req.body;
-    if (!(password && (email || phone))) {
+     if (!(password && (email || phone))) {
         throw new apiError(400, "Please fill in all required details");
     }
+   if(email?.id) emailValidator(email.id);
+   if(phone?.number) phoneValidator(phone?.number);
 
-    const user = await User.findOne(email ? { email } : { phone }).select("+password");
+    const user = await User.findOne(email?.id ? { "email.id":email.id } : { "phone.number":phone.number }).select("+password");
 
     if (!user) {
         throw new apiError(404, "User not found with the provided email or phone number.");
@@ -188,6 +193,32 @@ const getCurrentUser = asyncHandler(async (req, res) => {
         )
 });
 
+const updateUserAccountDetails = asyncHandler(async(req, res)=>{
+const {name, address} = req.body;
+if(!(name || address)){
+throw new apiError(400,"Nothing to update");
+}
+const updateData = {};
+if(name) updateData.name = name;
+if(address) updateData.address = address;
+
+const user = await User.findByIdAndUpdate(req.user._id,updateData,{new:true, runValidators:true});
+
+return res
+.status(200)
+.json(new apiResponse(200, user, "User details updated successfully"))
+});
+
+const deleteAccount = asyncHandler(async(req, res)=>{
+const deletedUser = await User.findByIdAndDelete(req.user?._id);
+if(!deletedUser){
+throw new apiError(404,"User not found");
+}
+return res
+.status(200)
+.json(new apiResponse(200,{},"User deleted successfully"))
+});
+
 
 
 // dev only controller 
@@ -227,5 +258,7 @@ export {
     refreshAccessToken,
     changeUserPassword,
     getCurrentUser,
-    registerAdmin
+    registerAdmin,
+    updateUserAccountDetails,
+    deleteAccount
 }
