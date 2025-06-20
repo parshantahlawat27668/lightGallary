@@ -7,26 +7,31 @@ const userSchema = new mongoose.Schema({
         required: [true, "Name is required"],
         trim: true
     },
-    email:{ 
-    id:{
-        type: String,
-        lowercase: true,
-        trim: true,
-        unique: true,
-        sparse: true,
-        validate:{
-            validator:function(v){
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    email: {
+        id: {
+            type: String,
+            lowercase: true,
+            trim: true,
+            unique: true,
+            sparse: true,
+            validate: {
+                validator: function (v) {
+                    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+                },
+                message: "Invalid email id"
             },
-            message:"Invalid email id"
+
         },
-        
+        isVerified: {
+            type: Boolean,
+            default: false
+        },
+        otp: {
+            code: { type: String, select: false },
+            expiresAt: { type: Date, select: false },
+            attempts:{type:Number, select:false, default:0}
+        }
     },
-    isVerified:{
-        type:Boolean,
-        default:false
-    }
-},
     password: {
         type: String,
         required: [true, "Password is Required"],
@@ -47,9 +52,14 @@ const userSchema = new mongoose.Schema({
                 message: "Invalid phone number"
             }
         },
-        isVerified:{
-            type:Boolean,
-            default:false
+        isVerified: {
+            type: Boolean,
+            default: false
+        },
+        otp: {
+            code: { type: String, select: false },
+            expiresAt: { type: Date, select: false },
+            attempts:{type:Number, select:false, default:0}
         }
     },
     address: {
