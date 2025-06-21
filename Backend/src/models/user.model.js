@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
         otp: {
             code: { type: String, select: false },
             expiresAt: { type: Date, select: false },
-            attempts:{type:Number, select:false, default:0}
+            attempts: { type: Number, select: false, default: 0 }
         }
     },
     password: {
@@ -38,6 +38,18 @@ const userSchema = new mongoose.Schema({
         trim: true,
         minlength: 6,
         select: false
+    },
+    forgotPassword: {
+        email: {
+            code: { type: String, select: false },
+            expiresAt: { type: Date, select: false },
+            attempts: { type: Number, default: 0, select: false }
+        },
+        phone:{
+            code: { type: String, select: false },
+            expiresAt: { type: Date, select: false },
+            attempts: { type: Number, default: 0, select: false }
+        }
     },
     phone: {
         number: {
@@ -59,8 +71,13 @@ const userSchema = new mongoose.Schema({
         otp: {
             code: { type: String, select: false },
             expiresAt: { type: Date, select: false },
-            attempts:{type:Number, select:false, default:0}
+            attempts: { type: Number, select: false, default: 0 }
         }
+    },
+    provider: {
+        type: String,
+        enum: ["local", "google"],
+        default: "local"
     },
     address: {
         street: { type: String, default: "", trim: true },
@@ -138,6 +155,17 @@ userSchema.methods.generateRefreshToken = async function () {
             expiresIn: process.env.REFRESH_TOKEN_EXPIRY
         }
     )
+}
+userSchema.methods.generateForgotPasswordToken = async function (){
+    return jwt.sign({
+        _id:this._id,
+        purpose:"forgot-password",
+        role:this.role
+    },
+    process.env.FORGOTPASSWORD_TOKEN_SECRET,
+    {expiresIn:process.env.FORGOTPASSWORD_TOKEN_EXPIRY}
+
+);
 }
 
 const User = mongoose.model("User", userSchema);
