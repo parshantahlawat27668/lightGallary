@@ -15,6 +15,13 @@ router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/logout").post(verifyJWT,logoutUser);
 router.route("/refresh-token").post(verifyJWT,refreshAccessToken);
+router.route("/send-forgot-password-email").patch(sendForgotPasswordOtpToEmail);
+router.route("/verify-forgot-password-email").post(verifyForgotPasswordOtpFromEmail);
+router.route("/send-forgot-password-phone").patch(sendForgotPasswordOtpToPhone);
+router.route("/verify-forgot-password-phone").post(verifyForgotPasswordOtpFromPhone);
+router.route("/reset-forgot-password").put(resetForgotPassword);
+
+
 
 //Password
 router.route("/password-forgot-email").post(sendForgotPasswordOtpToEmail);
@@ -22,10 +29,10 @@ router.route("/password-verify-email").post(verifyForgotPasswordOtpFromEmail);
 router.route("/password-forgot-phone").post(sendForgotPasswordOtpToPhone);
 router.route("/password-verify-phone").post(verifyForgotPasswordOtpFromPhone);
 router.route("/password-reset").patch(resetForgotPassword);
-router.route("/change-password").post(verifyJWT,changeUserPassword);
+router.route("/change-password").patch(verifyJWT,changeUserPassword);
 
 // verification
-router.route("/verify-email").patch(verifyJWT,emailVerification);
+router.route("/verify-email").post(verifyJWT,emailVerification);
 router.route("/send-email-verification-code").patch(verifyJWT,sendEmailVerificationCode);
 router.route("/verify-phone").post(phoneVerification);
 

@@ -1,24 +1,36 @@
 import mongoose from "mongoose";
+import { type } from "os";
 const productSchema = new mongoose.Schema({
     title: {
         type: String,
         required: [true, "Product Title is Required"],
         trim: true
     },
-    descrption: {
+    description: {
         type: String,
         required: true,
+        trim: true
+    },
+    specifications: {
+        wattage: { type: String },     // e.g. "10W"
+        voltage: { type: String },     // e.g. "220V"
+        colorTemperature: { type: String }, // e.g. "Warm White"
+        material: { type: String },    // e.g. "Aluminium"
+        dimensions: { type: String }   // e.g. "10cm x 10cm x 5cm"
     },
     price: {
         type: Number,
-        required: [true, "Product Price is Required"]
+        required: [true, "Product Price is Required"],
+        min: [0, "Price cannot be negative"]
     },
     discountPrice: {
-        type: Number
+        type: Number,
+        min: [0, "Discount cannot be negative"]
     },
     stock: {
         type: Number,
-        default: 0
+        default: 0,
+        min: [0, "Stock cannot be negative"]
     },
     sold: {
         type: Number,
@@ -26,25 +38,40 @@ const productSchema = new mongoose.Schema({
     },
     images: {
         front: {
-            type: String,
-            required: [true, "Front Image is required"]  
+            url: {
+                type: String,
+                required: [true, "Front Image is required"]
+            },
+            public_id:{type:String, required:true},
+            resource_type:{type:String}
         },
         back: {
-            type: String,
+               url: {
+                type: String
+            },
+            public_id:{type:String},
+            resource_type:{type:String}
         }
     },
     category: {
         type: String,
         required: [true, "Category is required"],
+        trim: true
     },
     subCategory: {
         type: String,
-        required: [true, "Sub Category is required"]
+        required: [true, "Sub Category is required"],
+        trim: true
     },
 
     brand: {
         type: String,
-        default: ""
+        default: "",
+        trim: true
+    },
+    isPublish: {
+        type: Boolean,
+        default: true
     },
     rating: {
         type: Number,
@@ -61,5 +88,5 @@ const productSchema = new mongoose.Schema({
 },
     { timestamps: true });
 
-const  Product = mongoose.model("Product", productSchema);
-export   default Product; 
+const Product = mongoose.model("Product", productSchema);
+export default Product; 

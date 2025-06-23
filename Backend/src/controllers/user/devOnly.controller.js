@@ -1,9 +1,10 @@
 import { apiError } from "../../utils/apiError.js";
 import { apiResponse } from "../../utils/apiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
+import User from "../../models/user.model.js";
 
 const registerAdmin = asyncHandler(async (req, res) => {
-    return res.status(400).json(new apiResponse(400, {}, "This feature is disable now"))
+    // return res.status(400).json(new apiResponse(400, {}, "This feature is disable now"))
 
     const { name, email, phone, password, role } = req.body;
     if (!(name && email && phone && password && role)) {
