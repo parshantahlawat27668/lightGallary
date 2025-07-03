@@ -1,0 +1,91 @@
+    .footer {
+  background-color: #111;
+  color: #eee;
+  padding: 50px 20px 20px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.column h4 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.column ul li {
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  font-size: 13px;
+  font-weight: 300;
+}
+
+.column ul li:hover {
+  color: #ffc107;
+}
+.column p{
+font-size: 13px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffc107;
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 13px;
+  color: #ccc;
+  line-height: 1.6;
+}
+
+.socials a {
+  display: inline-block;
+  margin-right: 12px;
+  font-size: 13px;
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.socials a:hover {
+  color: #ffc107;
+}
+
+.bottomBar {
+  border-top: 1px solid #333;
+  margin-top: 40px;
+  padding-top: 15px;
+  text-align: center;
+  font-size: 13px;
+  color: #888;
+}
+
+.legalLinks {
+  margin-top: 5px;
+}
+
+.legalLinks a {
+  color: #888;
+  margin: 0 10px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.legalLinks a:hover {
+  color: #ffc107;
+}

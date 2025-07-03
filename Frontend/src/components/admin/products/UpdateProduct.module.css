@@ -1,0 +1,97 @@
+.main {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-size: 0.9rem;
+    overflow: auto;
+
+}
+
+.main h2 {
+    position: absolute;
+    margin: 0px;
+    margin-top: 25px;
+    top: 0px;
+}
+
+.groupField input {
+    background-color: rgba(230, 253, 138, 0.677);
+    font-family: Titillium Web;
+    font-weight: 500;
+    font-size: 13px;
+
+
+}
+
+textarea {
+    background-color: rgba(230, 253, 138, 0.519);
+    font-family: Titillium Web;
+
+    font-size: 13px;
+
+}
+
+.form {
+    flex-grow: 1;
+    top: 20px;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid rgba(0, 0, 0, 0.423);
+    gap: 10px;
+    padding: 20px;
+    padding-top: 50px;
+    border-radius: 12px;
+}
+
+label {
+    font-weight: 600;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 1;
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+}
+
+.groupField {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+}
+
+.btn {
+    margin-top: 10px;
+    padding: 7px 10px;
+    border: none;
+    border-radius: 12px;
+    background-color: rgb(230, 253, 138);
+    font-family: Righteous;
+
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.cancelBtn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+@media only screen and (max-width:1000px) {
+    .form {
+        flex-direction: column;
+        overflow: auto;
+    }
+
+}

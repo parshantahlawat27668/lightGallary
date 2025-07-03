@@ -4,6 +4,7 @@ import { asyncHandler } from "../../utils/asyncHandler.js";
 import { emailValidator, phoneValidator } from "../../utils/validator.js";
 import User from "../../models/user.model.js";
 import { generateOTP } from "../../utils/generateOTP.js";
+import { sanitizeUser } from "../../utils/sanitizeUser.js";
 
 
 const phoneVerification = asyncHandler(async (req, res) => {
@@ -35,21 +36,18 @@ const phoneVerification = asyncHandler(async (req, res) => {
         await user.save()
         throw new apiError(400, "Invalid OTP");
     }
-
     user.phone.otp.code = undefined;
     user.phone.otp.expiresAt = undefined;
     user.phone.isVerified = true;
     user.phone.otp.attempts = 0;
     await user.save();
-    const updatedUser = user.toObject();
-    delete updatedUser.password;
-    delete updatedUser.refreshToken;
+    const responseUser = sanitizeUser(user);
 
 
     return res
         .status(200)
         .json(
-            new apiResponse(200, updatedUser, "Phone no. verified successfully")
+            new apiResponse(200, {user:responseUser}, "Phone no. verified successfully")
         )
 
 });

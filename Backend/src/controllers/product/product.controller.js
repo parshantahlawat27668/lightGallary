@@ -6,25 +6,27 @@ import { deleteFromCloudinary, uploadToCloudinary } from "../../utils/cloudinary
 
 
 const addProduct = asyncHandler(async(req, res)=>{
-const  {title, description, specifications, price, discountPrice, stock, category, subCategory, brand, isPublish} = req.body;
+const  {title, description, price, discountPrice, stock, category, subCategory, brand, isPublish, wattage,voltage, colorTemperature, warranty } = req.body;
 const files = req.files;
-const requiredFields = [title, description, specifications, price, stock, category, subCategory, brand];
+console.log(title, description, price, stock, category, subCategory, brand,  wattage, voltage, colorTemperature, warranty);
+const requiredFields = [title, description, price, stock, category, subCategory, brand,  wattage, voltage, colorTemperature, warranty];
 const allRequiredPresent = requiredFields.every(field => field !==undefined && field !==null && field !=="");
 if(!allRequiredPresent){
 throw new apiError(400, "All required fields must be properly filled.");
 }
-let parseSpecification;
-try {
-   parseSpecification = JSON.parse(specifications);
-} catch (error) {
-    throw new apiError(400,"Invalid specification format");
-}
+ const specifications = {
+    voltage:voltage,
+    wattage:wattage,
+    colorTemperature:colorTemperature,
+    warranty:warranty
+ }
+
 if(!files.frontImage){
     console.log(files.frontImage);
 throw new apiError(400,"Front Image is required")
 }
 
-const isAlreadyExist = await  Product.findOne({title, "specifications.wattage":parseSpecification.wattage});
+const isAlreadyExist = await  Product.findOne({title, "specifications.wattage":specifications.wattage});
 if(isAlreadyExist){
 throw new apiError(400,"Product already exists");
 }
@@ -49,7 +51,7 @@ if(cloudinaryBackImage){images.back=cloudinaryBackImage;}
 const product = await Product.create({
     title,
     description,
-    specifications:parseSpecification,
+    specifications:specifications,
     price,
     discountPrice,
     stock,
@@ -140,7 +142,7 @@ const query = {
             {subCategory:{$regex:search, $options:"i"}}
     ]
 }
-const products = await Product.find(query).sort({[sortBy]:order}).skip(skip).limit(limit);
+const products = await Product.find(query).sort({[sortBy]:order}).skip(skip);
 const totalProducts = await Product.countDocuments(query);
 const totalPages = Math.ceil(totalProducts/limit);
 return res

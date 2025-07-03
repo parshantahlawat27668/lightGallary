@@ -15,8 +15,7 @@ const productSchema = new mongoose.Schema({
         wattage: { type: String },     // e.g. "10W"
         voltage: { type: String },     // e.g. "220V"
         colorTemperature: { type: String }, // e.g. "Warm White"
-        material: { type: String },    // e.g. "Aluminium"
-        dimensions: { type: String }   // e.g. "10cm x 10cm x 5cm"
+        warranty:{type:String}  // e.g. "2 year "
     },
     price: {
         type: Number,

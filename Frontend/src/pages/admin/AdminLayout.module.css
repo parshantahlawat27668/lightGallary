@@ -1,0 +1,76 @@
+.main{
+    height: 100vh;
+    width: 100vw;
+    margin: 0px;
+    padding: 0px;
+    /* background-color: aqua; */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.header{
+    width: 100%;
+    background-color: rgba(137, 43, 226, 0.405);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.adminName{
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding-left: 7px;
+    padding-right: 3px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    border-radius: 50px;
+    border: 0.5px solid black;
+    font-family: Titillium Web;
+    font-weight: 600;
+    cursor: pointer;
+}
+.adminName p{
+    font-size: 12px;
+}
+.logo{
+    font-family: Righteous;
+    font-weight: 300;
+    font-size: 25px;
+    margin-left: 10px;
+}
+
+.body{
+    height: 100%;
+    width: 100%;
+    /* background-color: brown; */
+    display: flex;
+    flex-direction: row;
+}
+.sideBar{
+height: auto;
+overflow: hidden;
+background-color: green;
+display: flex;
+flex-direction: column;
+}
+.link{
+    width: 100%;
+    background-color: orange;
+    padding: 10px 0px;
+    padding-left: 8px;
+    padding-right: 65px;
+    cursor: pointer;
+    font-size: 17px;
+    font-family: Titillium Web;
+    font-style: none;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.link:visited{
+    color: inherit;
+}
+
+

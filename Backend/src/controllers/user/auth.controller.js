@@ -7,17 +7,17 @@
     import { apiError } from "../../utils/apiError.js";
     import { apiResponse } from "../../utils/apiResponse.js";
     import { asyncHandler } from "../../utils/asyncHandler.js";
+import { sanitizeUser } from "../../utils/sanitizeUser.js";
 
     const registerUser = asyncHandler(async (req, res) => {
-        const { name, email, password, phone } = req.body;
+        const { name, password, phone } = req.body;
         if (!(name && password && phone)) {
             throw new apiError(400, "Please fill in all required details.");
         }
-        if (email) emailValidator(email);
         phoneValidator(phone);
         const isUserExist = await User.findOne({ "phone.number": phone });
         if (isUserExist) {
-            throw new apiError(409, "User already exists with email or phone");
+            throw new apiError(409, "phone number already registered.");
         }
         let user;
         try {
@@ -31,7 +31,6 @@
 
             user = await User.create({
                 name,
-                email,
                 phone: phoneData,
                 password,
             });
@@ -46,12 +45,6 @@
         if (!user) {
             throw new apiError(500, "User registration failed");
         }
-        const userData = user.toObject();
-        delete userData.password;
-        delete userData.refreshToken;
-        delete userData.phone.otp.code;
-        delete userData.phone.otp.expiresAt;
-        delete userData.phone.otp.attempts;
 
 
         return res
@@ -59,7 +52,7 @@
             .json(
                 new apiResponse(
                     201,
-                    userData,
+                    {},
                     `Vefirication code send on mobile no. ${user.phone.number}`
                 )
             )
@@ -88,12 +81,13 @@
         const { accessToken, refreshToken } = await tokenGenerator(user);
 
         const loggedInUser = await User.findById(user._id);
+        const responseUser = sanitizeUser(loggedInUser);
         return res
             .status(200)
-            .cookie("accessToken", accessToken, { httpOnly: true, secure: true, sameSite: "none", maxAge: 30 * 60 * 1000 })
-            .cookie("refreshToken", refreshToken, { httpOnly: true, secure: true, sameSite: "none", maxAge: 7 * 24 * 60 * 60 * 1000 })
+            .cookie("accessToken", accessToken, { httpOnly: true, secure: false, sameSite: "lax", maxAge: 30 * 60 * 1000 })
+            .cookie("refreshToken", refreshToken, { httpOnly: true, secure: false, sameSite: "lax", maxAge: 7 * 24 * 60 * 60 * 1000 })
             .json(
-                new apiResponse(200, loggedInUser, loggedInUser.role === "admin" ? "Admin login successfully" : "User login successfully")
+                new apiResponse(200, {user:responseUser}, loggedInUser.role === "admin" ? "Admin login successfully" : "User login successfully")
             )
 
     });

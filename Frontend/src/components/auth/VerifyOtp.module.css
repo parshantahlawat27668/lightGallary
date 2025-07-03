@@ -1,0 +1,82 @@
+.main {
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: fit-content;
+    /* gap: 8px; */
+    background-color: rgba(0, 0, 0, 0.675);
+    padding: 30px 30px;
+    border-radius: 20px;
+    width: 23rem;
+
+}
+.otpContainer{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 15px;
+}
+.otpContainer input{
+    width:30px !important;
+    padding:8px;
+    font-size: 20px;
+    text-align: center;
+    font-family: Righteous;
+    font-weight: 300;
+
+
+}
+.form hr {
+    width: 100%;
+    margin: 0px;
+    margin-bottom: 40px;
+    margin-top: 10px;
+    border:1px solid #e6c058;
+
+}
+.form h2 {
+    font-size: 1.8rem;
+    margin: 0px;
+    margin-top: 10px;
+    font-family: Righteous;
+    font-weight: 300;
+        /* margin-bottom: 2px; */
+}
+.form p{
+    font-family: Titillium Web;
+    margin: 0px;
+    font-size: 12px;
+    color: #e6c058;
+    /* margin-top: 5px; */
+}
+.resendOtp{
+    cursor: pointer;
+}
+.btn {
+    padding: 8px 2px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: rgba(0, 0, 0, 0.789);
+    color: #d5c28f;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: Righteous;
+    font-weight: 300;
+
+
+}
+.btn:hover{
+        color: #e6c058;
+        cursor: pointer;
+}
