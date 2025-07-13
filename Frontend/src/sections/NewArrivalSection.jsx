@@ -3,10 +3,13 @@ import React, { useRef } from 'react';
 import styles from "./NewArrivalSection.module.css";
 import { RiArrowLeftWideLine, RiArrowRightWideFill } from "react-icons/ri";
 import Product from '../components/user/Product';
+import { useSelector } from 'react-redux';
+import { selectNewArrivals } from '../store/selectors/productsSelectors';
 
 const NewArrivalSection = () => {
+  const newArrivalProducts = useSelector((state)=>selectNewArrivals(state,10));
   const scrollRef = useRef(null);
-  const scrollAmount = 220; // Customize based on card width
+  const scrollAmount = 200; // Customize based on card width
 
   const scrollRight = () => {
     const container = scrollRef.current;
@@ -59,10 +62,10 @@ const NewArrivalSection = () => {
       </div>
 
       <div className={styles.productsContainer} ref={scrollRef}>
-        {products.map((product, index) => (
-          <Product key={index} name={product.name} price={product.price} />
+        {newArrivalProducts.map((product, index) => (
+          <Product key={index} title={product.title} price={product.price} productId={product._id}/>
         ))}
-      </div>
+      </div>  
     </div>
   );
 };

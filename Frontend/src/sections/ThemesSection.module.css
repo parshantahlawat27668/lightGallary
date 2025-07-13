@@ -1,7 +1,7 @@
 .main {
   position: relative;
   width: 100vw;
-  height: 350px;
+  height: 400px;
   overflow: hidden; /* Important: hide overflow during slide transition */
   background-color: aqua;
   display: flex;

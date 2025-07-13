@@ -9,37 +9,30 @@ cloudinary.config({
     api_secret:process.env.CLOUDINARY_API_SECRET
 });
 
-const uploadToCloudinary = async (localFilePath)=>{
-if(!localFilePath){
-console.log("No file path provided to upload");
-return null;
-}
-try {
-    const result = await cloudinary.uploader.upload(localFilePath,{
-        resource_type:"auto"
-    });
-    if(fs.existsSync(localFilePath)){
-        fs.unlinkSync(localFilePath);
-    }
-    return {
-        url:result.secure_url,
-        public_id:result.public_id,
-        resource_type:result.resource_type
-    }
-
-} catch (error) {
-    console.log(error);
-    if(fs.existsSync(localFilePath)){
-     fs.unlinkSync(localFilePath);
-    }
-   return null
-}
-
+const uploadToCloudinary = (buffer, filename, folder = "products")=>{
+    return new Promise((resolve, reject)=>{
+        cloudinary.uploader.upload_stream({
+            resource_type:"image",
+            folder,
+            public_id:filename.split(".")[0]
+        },
+        (error, result)=>{
+            if(error){
+                console.log("Cloudinary Upload error: ", error);
+                return reject(error);
+            }
+            resolve({
+                url:result.secure_url,
+                public_id:result.public_id,
+                resource_type:result.resource_type
+            });
+        }
+    ).end(buffer);
+    })
 }
 
 const deleteFromCloudinary = async (public_id)=>{
-    try {
-        
+    try {     
         const result = cloudinary.uploader.destroy(public_id);
     } catch (error) {
         console.log(error);

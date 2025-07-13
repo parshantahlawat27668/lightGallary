@@ -4,7 +4,7 @@ import productsReducer from './products'
 const store = configureStore({
     reducer:{
     user:userReducer,
-    product:productsReducer,
+    products:productsReducer,
     
     }
 });

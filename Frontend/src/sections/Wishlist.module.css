@@ -1,0 +1,30 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.productContainer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.heading {
+    font-family: Righteous;
+    font-size: 22px;
+}
+
+.moveCartBtn {
+    flex: 1;
+    background-color: orange;
+    outline: none;
+    border: none;
+    font-family: Titillium Web;
+    font-weight: 500;
+    color: white;
+    padding: 5px 0px;
+    font-size: 15px;
+}

@@ -3,8 +3,22 @@
     flex-direction: column;
     /* position:fixed; */
     width: 100%;
-    
-    
+}
+.link,
+.link:visited,
+.link:focus,
+.link:active
+
+
+{
+    transition: transform 0.1s ease;
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+  box-shadow: none;
+}
+.link:hover{
+    transform: scale(1.1);
 }
 .nav1{
     display: flex;
@@ -21,7 +35,8 @@
 background-color: rgba(0, 0, 0, 0.095);
 width: 100% !important;
 font-size: 14px;    
-padding: 8px 7px;
+padding: 8px 8px;
+padding-left: 12px;
 border-radius: 12px;
 }
 .main h1{
@@ -35,7 +50,7 @@ border-radius: 12px;
 .rightOpt{
     margin-right: 20px;
     display: flex;
-    gap:12px;
+    gap:15px;
 }
 .nav2{
     display: flex;
@@ -44,6 +59,10 @@ border-radius: 12px;
     justify-content: center;
     gap: 20px;
     background-color: rgba(0, 0, 0, 0.149);
+}
+.nav2 .link{
+    font-size: 13px;
+    padding: 4px 0px;
 }
 .nav2 p{
     margin: 3px 0px;

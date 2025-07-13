@@ -11,6 +11,7 @@ import NewArrivalSection from '../../sections/NewArrivalSection'
 import TopRatedSection from '../../sections/TopRatedSection'
 import CategorySection from '../../sections/CategorySection'
 import Product from '../../components/user/Product'
+import { Outlet } from 'react-router-dom'
 const UserLayout = () => {
     const dispatch = useDispatch();
     const fetchProducts = async()=>{
@@ -32,11 +33,7 @@ const UserLayout = () => {
   return (
     <div className={styles.main}>
       <Header/>
-      <ThemesSection/>  
-      <BestSellersSection/> 
-      <NewArrivalSection/>
-      <TopRatedSection/>
-      <CategorySection/>
+      <Outlet/>
       <Footer/>
     </div>
   )

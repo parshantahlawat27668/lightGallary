@@ -1,6 +1,4 @@
 import mongoose from 'mongoose'
-import { type } from 'os';
-import { title } from 'process';
 const orderSchema = new mongoose.Schema({
 user:{
     type:mongoose.Schema.Types.ObjectId,

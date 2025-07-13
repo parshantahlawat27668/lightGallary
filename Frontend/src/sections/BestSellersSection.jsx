@@ -3,10 +3,12 @@ import React, { useRef } from 'react';
 import styles from "./BestSellersSection.module.css";
 import { RiArrowLeftWideLine, RiArrowRightWideFill } from "react-icons/ri";
 import Product from '../components/user/Product';
-
+import {useSelector} from "react-redux"
+import { selectBestSellers } from '../store/selectors/productsSelectors';
 const BestSellersSection = () => {
+  const bestSellerProducts = useSelector((state)=>selectBestSellers(state,10));
   const scrollRef = useRef(null);
-  const scrollAmount = 220; // Customize based on card width
+  const scrollAmount = 200; // Customize based on card width
 
   const scrollRight = () => {
     const container = scrollRef.current;
@@ -34,19 +36,6 @@ const BestSellersSection = () => {
     }
   };
 
-  const products = [
-    { name: "LED Smart Bulb", price: 299 },
-    { name: "Ceiling Panel Light", price: 899 },
-    { name: "Decorative Wall Light", price: 649 },
-    { name: "Tube Light 36W", price: 450 },
-    { name: "Spot Light Adjustable", price: 320 },
-    { name: "Flood Light 100W", price: 1299 },
-    { name: "Solar Garden Light", price: 799 },
-    { name: "Chandelier 5 Arms", price: 2599 },
-    { name: "Emergency Light", price: 559 },
-    { name: "Pendant Hanging Light", price: 999 },
-  ];  
-
   return (
     <div className={styles.main}>
       <div className={styles.sectionHeader}>
@@ -59,8 +48,8 @@ const BestSellersSection = () => {
       </div>
 
       <div className={styles.productsContainer} ref={scrollRef}>
-        {products.map((product, index) => (
-          <Product key={index} name={product.name} price={product.price} />
+        {bestSellerProducts?.map((product, index) => (
+          <Product key={index} title={product.title} price={product.price} productId={product._id}/>
         ))}
       </div>
     </div>

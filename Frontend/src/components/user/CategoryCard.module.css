@@ -1,0 +1,27 @@
+.categoryCard{
+    position: relative;
+}
+.categoryImg{
+    width: 250px;
+}
+.categoryName{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    position:absolute;
+    bottom: 10%;
+    text-align: center;
+    width: 100%;
+    font-size: 20px;
+    font-family: Righteous;
+    font-weight: 400 !important;
+}
+.categoryName p{
+    color: rgb(254, 223, 123);
+    position: relative;
+    bottom: -5px;
+}
+.leftWing{
+    transform: scaleX(-1);
+}

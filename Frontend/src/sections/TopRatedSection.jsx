@@ -6,7 +6,7 @@ import Product from '../components/user/Product';
 
 const TopRatedSection = () => {
   const scrollRef = useRef(null);
-  const scrollAmount = 220; // Customize based on card width
+  const scrollAmount = 200; // Customize based on card width
 
   const scrollRight = () => {
     const container = scrollRef.current;
@@ -60,7 +60,7 @@ const TopRatedSection = () => {
 
       <div className={styles.productsContainer} ref={scrollRef}>
         {products.map((product, index) => (
-          <Product key={index} name={product.name} price={product.price} />
+          <Product key={index} name={product.name} price={product.price} productId={product._id}/>
         ))}
       </div>
     </div>
