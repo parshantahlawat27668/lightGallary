@@ -37,18 +37,11 @@ const NewArrivalSection = () => {
     }
   };
 
-  const products = [
-    { name: "LED Smart Bulb", price: 299 },
-    { name: "Ceiling Panel Light", price: 899 },
-    { name: "Decorative Wall Light", price: 649 },
-    { name: "Tube Light 36W", price: 450 },
-    { name: "Spot Light Adjustable", price: 320 },
-    { name: "Flood Light 100W", price: 1299 },
-    { name: "Solar Garden Light", price: 799 },
-    { name: "Chandelier 5 Arms", price: 2599 },
-    { name: "Emergency Light", price: 559 },
-    { name: "Pendant Hanging Light", price: 999 },
-  ];  
+
+  const user = useSelector((state)=>state.user.activeUser);
+  const wishlist = user?.wishList?.map((id) => id.toString()) || [];
+  const wishlistSet = new Set(wishlist);
+  const isWishListed = (productId) => wishlistSet.has(productId.toString());
 
   return (
     <div className={styles.main}>
@@ -63,7 +56,7 @@ const NewArrivalSection = () => {
 
       <div className={styles.productsContainer} ref={scrollRef}>
         {newArrivalProducts.map((product, index) => (
-          <Product key={index} title={product.title} price={product.price} productId={product._id}/>
+          <Product key={index} product={product} wishListed={isWishListed(product._id)}/>
         ))}
       </div>  
     </div>

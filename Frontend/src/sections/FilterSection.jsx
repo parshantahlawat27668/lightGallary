@@ -5,72 +5,74 @@ import { useSearchParams } from "react-router-dom"
 import Product from '../components/user/Product'
 import { useSelector } from "react-redux"
 import { selectAllProducts } from '../store/selectors/productsSelectors';
-
+import { useNavigate } from 'react-router-dom';
 
 const categories = [
   {
-    category: "indoor",
+    category: "Indoor lights",
     subCategory: [
-      "Ceiling Lights",
-      "Panel Lights",
+      "Ceiling Light",
+      "Panel Light",
       "Chandeliers",
-      "Track Lights",
-      "Wall Lights"
+      "Track Light",
+      "Wall Light"
     ]
   },
   {
-    category: "outdoor",
+    category: "Outdoor lights",
     subCategory: [
-      "Flood Lights",
-      "Street Lights",
-      "Garden Lights",
-      "Gate Lights",
-      "Bollard Lights"
+      "Flood Light",
+      "Street Light",
+      "Garden Light",
+      "Gate Light",
+      "Bollard Light"
     ]
   },
   {
-    category: "decorative",
+    category: "Decorative lights",
     subCategory: [
       "String Lights",
       "Lanterns",
       "Wall Art Lights",
-      "Neon Signs",
+      "Neon Sign",
       "Festive Lights"
     ]
   },
   {
-    category: "smart",
+    category: "Smart lights", 
     subCategory: [
-      "Smart Bulbs",
-      "Smart Strips",
-      "Motion Sensor Lights",
-      "Voice Controlled Lights"
+      "Smart Bulb",
+      "Smart Strip",
+      "Motion Sensor Light",
+      "Voice Controlled Light"
     ]
   },
   {
-    category: "lamps",
+    category: "Lamps",
     subCategory: [
-      "Table Lamps",
-      "Floor Lamps",
-      "Desk Lamps",
-      "Study Lamps",
-      "Bedside Lamps"
+      "Table Lamp",
+      "Floor Lamp",
+      "Desk Lamp",
+      "Study Lamp",
+      "Bedside Lamp"
     ]
   },
   {
-    category: "bulbs",
+    category: "Basic lights",
     subCategory: [
-      "LED Bulbs",
-      "CFL Bulbs",
-      "Tube Lights",
-      "Rechargeable Bulbs"
+      "LED Bulb",
+      "CFL Bulb",
+      "Tube Light",
+      "Rechargeable Bulb"
     ]
   }
 ];
 
 
 
+
 const FilterSection = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const categoryParams = searchParams.get("category");
   const allProducts = useSelector((state) => selectAllProducts(state));
@@ -102,7 +104,8 @@ const FilterSection = () => {
     if (category === "All") {
       return allProducts;
     }
-    const filteredProducts = allProducts?.filter((product) => (product.category === category && subCategoryArray?.includes(product.subCategory)));
+    const filteredProducts = allProducts?.filter((product) => (product.category.trim().toLowerCase() === category.trim().toLocaleLowerCase() && subCategoryArray?.includes(product.subCategory)));
+
     return filteredProducts;
   }
 
@@ -117,25 +120,28 @@ const FilterSection = () => {
     setCategory(categoryParams || "All");
   }, [categoryParams]);
 
-
   useEffect(() => {
-    updateDisplayProducts();
-  }, [category, subCategoryArray, sortBy, categoryParams]);
-
-
-
-
-  useEffect(() => {
-    const selectedCategory = categories.find((product) => product.category === category);
-    setSelectedSubCategories(selectedCategory?.subCategory);
-    setSubCategoryArray(selectedCategory?.subCategory);
+    const selectedCategory = categories.find((product) => product.category.trim().toLowerCase() === category.trim().toLowerCase());
+    setSelectedSubCategories(selectedCategory?.subCategory || []);
+    setSubCategoryArray(selectedCategory?.subCategory || []);
   }, [category]);
 
 
 
 
+  useEffect(() => {
+    updateDisplayProducts();
+  }, [subCategoryArray, sortBy]);
+
+
+
+
+
+
+
+
   const categoryChangeHandler = (e) => {
-    setCategory(e.target.value);
+    navigate(`/shop/filter/?category=${e.target.value}`);
   }
 
   const subCategoryChangeHandler = (e) => {
@@ -156,6 +162,15 @@ const FilterSection = () => {
     console.log("sort value change ", e.target.value);
   }
 
+// const userString = localStorage.getItem("activeUser");
+// const user = userString ? JSON.parse(userString) : null;
+
+const user = useSelector((state)=>state.user.activeUser);
+const wishlist = user?.wishList?.map((id) => id.toString()) || [];
+const wishlistSet = new Set(wishlist);
+const isWishListed = (productId) => wishlistSet.has(productId.toString());
+
+
 
 
 
@@ -172,12 +187,12 @@ const FilterSection = () => {
             <label htmlFor='cagegory'>Category</label>
             <select id='category' name='category' className={styles.categoryInput} value={category} onChange={(e) => categoryChangeHandler(e)}>
               <option value="All">All</option>
-              <option value="indoor">Indoor</option>
-              <option value="outdoor">OutDoor</option>
-              <option value="decorative">Decorative Lights</option>
-              <option value="smart">Smart Lights</option>
-              <option value="lamps">Lamps</option>
-              <option value="bulbs">Bulb & Tube Lights</option>
+              <option value="Indoor lights">Indoor lights</option>
+              <option value="Outdoor lights">Outdoor lights</option>
+              <option value="Decorative lights">Decorative lights</option>
+              <option value="Smart lights">Smart lights</option>
+              <option value="Lamps">Lamps</option>
+              <option value="Basic lights">Basic lights</option>
             </select>
           </div>
 
@@ -208,7 +223,7 @@ const FilterSection = () => {
       <div className={styles.productsContainer}>
         {
           displayProducts?.map((product, index) => {
-            return <Product title={product?.title} price={product?.price} key={index} productId={product?._id} />
+            return <Product product={product} key={index} wishListed={isWishListed(product._id)} />
           })
         }
       </div>

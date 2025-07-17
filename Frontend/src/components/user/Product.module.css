@@ -1,6 +1,6 @@
 .main {
   flex: 0 0 auto;            /* ✅ Don’t grow or shrink */
-  width: 200px;              /* ✅ Fixed width */
+  width: 220px;              /* ✅ Fixed width */
   /* height: 320px; */
   display: flex;
   flex-direction: column;
@@ -9,7 +9,7 @@
   font-family: 'Titillium Web', sans-serif;
   box-sizing: border-box;    /* ✅ Prevent padding/margin from breaking layout */
   position: relative;
-
+  /* background-color: yellow;  */
 }
 
 
@@ -22,7 +22,8 @@
 
 .productImg {
     object-fit: cover;
-    width: 200px;
+    width: 220px;
+    height: 180px;
     margin-bottom: 5px;
 }
 .wishlistIcon{

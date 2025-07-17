@@ -5,27 +5,32 @@ import { GoHeartFill } from "react-icons/go";
 import { GoHeart } from "react-icons/go";
 import {useNavigate} from "react-router-dom"
 import axios from 'axios';
-const Product = forwardRef (({title, price, productId}, ref) => {
-  const [wishListed, setWishListed] = useState(false);
+import { updateUser } from '../../store/user';
+import {useDispatch} from "react-redux"
+const Product = forwardRef (({product, wishListed}, ref) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const toggleWishList = async()=>{
-    setWishListed((prev)=>!prev);
-    await axios.patch("http://localhost:8000/api/v1/user/toggle-wishlist-products",{productId});
+
+
+  const toggleWishList = async(productId,e)=>{
+    e.stopPropagation();
+    const response =  await axios.patch("http://localhost:8000/api/v1/user/toggle-wishlist-products",{productId},{withCredentials:true});
+    dispatch(updateUser(response.data.data.user));
   }
 
   const handleProductClick = (productId)=>{
 navigate(`/shop/product/?productId=${productId}`);
   }
   return (
-    <div className={styles.main} ref={ref} onClick={()=>handleProductClick(productId)}>
+    <div className={styles.main} ref={ref} onClick={()=>handleProductClick(product._id)}>
       {
         wishListed?
-        <GoHeartFill size={20} color='red' className={styles.wishlistIcon} onClick={()=>toggleWishList(productId)}/>:
-        <GoHeart size={20} color='grey' className={styles.wishlistIcon} onClick={toggleWishList}/>
+        <GoHeartFill size={20} color='red' className={styles.wishlistIcon} onClick={(e)=>toggleWishList(product._id,e)}/>:
+        <GoHeart size={20} color='grey' className={styles.wishlistIcon} onClick={(e)=>toggleWishList(product._id,e)}/>
       }
-      <img src={image} className={styles.productImg}></img>
-      <p>{title}</p>
-      <p>Rs. {price}</p>
+      <img src={product.images.front.url} className={styles.productImg}></img>
+      <p>{product.title}</p>
+      <p>Rs. {product.price}</p>
     </div>
   
   )

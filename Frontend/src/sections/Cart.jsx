@@ -1,19 +1,25 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from "./Cart.module.css"
+import {useSelector} from "react-redux"
+import { selectAllProducts } from '../store/selectors/productsSelectors';
 const Cart = () => {
-  const products = [
-  { name: "LED Smart Bulb", price: 299, quantity: 1 },
-  { name: "Ceiling Panel Light", price: 899, quantity: 2 },
-  { name: "Decorative Wall Light", price: 649, quantity: 1 },
-  { name: "Tube Light 36W", price: 450, quantity: 3 },
-  // { name: "Spot Light Adjustable", price: 320, quantity: 2 },
-  // { name: "Flood Light 100W", price: 1299, quantity: 1 },
-  // { name: "Solar Garden Light", price: 799, quantity: 2 },
-  // { name: "Chandelier 5 Arms", price: 2599, quantity: 1 },
-  // { name: "Emergency Light", price: 559, quantity: 4 },
-  // { name: "Pendant Hanging Light", price: 999, quantity: 1 },
-];
+  const cartProducts = useSelector((state)=>state.user.activeUser.cart);
+  const allProducts = useSelector((state)=>selectAllProducts(state));
 
+
+
+const getProductTitleById = (productId)=>{
+  const product = allProducts.find((product)=>product._id.toString()===productId.toString());
+  return product?.title;
+  }
+
+const getTotalPrice = ()=>{
+  let total=0;
+  cartProducts.map((product)=>{
+    total = total + product.price;
+  });
+  return total;
+}
   return (
     <div className={styles.main}>
      <p className={styles.heading}>Cart</p>
@@ -27,11 +33,12 @@ const Cart = () => {
  
 
       {
-        products.map((product)=>{
+        cartProducts.map((product)=>{
           return <div className={styles.productRow}>
-        <div className={`${styles.product} ${styles.cel}`}>{product.name}</div>
+        <div className={`${styles.product} ${styles.cel}`}><img src=''></img>{getProductTitleById(product.product)}</div>
         <div className={`${styles.quantity} ${styles.cel}`}>{product.quantity}</div>
         <div className={`${styles.total} ${styles.cel}`}>{product.price}</div>
+        {/* <p>Remove</p> */}
       </div>
         })
       }
@@ -39,7 +46,7 @@ const Cart = () => {
 
      </div>
      <div className={styles.checkOutContainer}>
-      <p>Subtotal: Rs. 4000</p>
+      <p>Subtotal: Rs. {getTotalPrice()}</p>
       <p>Tax included. Shipping calculated at checkout.</p>
       <button className={styles.checkOutBtn}>Check Out</button>
      </div>

@@ -2,9 +2,12 @@ import React, { useRef, useState } from 'react'
 import styles from "./ProductSection.module.css"
 import { LuPlus } from "react-icons/lu";
 import { LuMinus } from "react-icons/lu";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectProductById } from '../store/selectors/productsSelectors';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import {toast} from 'react-toastify'
+import axios from 'axios';
+import { updateUser } from '../store/user';
 // const product = {
 //       specifications: {
 //         wattage: '24',
@@ -42,6 +45,8 @@ import { useSearchParams } from 'react-router-dom';
 //       __v: 0
 //     }
 const ProductSection = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
   const [searchParams] = useSearchParams();
   const productId = searchParams.get("productId");
@@ -60,6 +65,17 @@ const ProductSection = () => {
     if(quantity>0){
       setQuantity((prev)=>prev-1);
     }
+  }
+
+  const handleAddToCart = async(productId, quantity)=>{
+    const response  = await axios.patch("http://localhost:8000/api/v1/user/add-to-cart",{productId, quantity},{withCredentials:true});
+    toast.success(response.data.message);
+    const user = response.data.data.user;
+    dispatch(updateUser(user));
+  }
+
+  const handleBuyNow = () =>{
+    navigate("/shop/orders",{state:{productId}});
   }
   return (
     <div className={styles.main}>
@@ -84,8 +100,8 @@ const ProductSection = () => {
         <input id='quantity' type='number' name='quantity' className={styles.quantityInput}min={1} value={quantity} onChange={(e)=>handleQuantityChange(e)}></input>
         <div className={styles.increment} ><LuPlus size={18} onClick={handleIncrement}/></div>
         </div>
-        <button className={styles.cartBtn}>ADD TO CART</button>
-        <button className={styles.buyBtn}>BUY IT NOW</button> 
+        <button className={styles.cartBtn} onClick={()=>handleAddToCart(product._id, quantity)}>ADD TO CART</button>
+        <button className={styles.buyBtn} onClick={handleBuyNow}>BUY IT NOW</button> 
       </div>
       </div>
     </div>

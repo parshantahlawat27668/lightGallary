@@ -36,6 +36,12 @@ const BestSellersSection = () => {
     }
   };
 
+
+  const user = useSelector((state)=>state.user.activeUser);
+  const wishlist = user?.wishList?.map((id) => id.toString()) || [];
+  const wishlistSet = new Set(wishlist);
+  const isWishListed = (productId) => wishlistSet.has(productId.toString());
+
   return (
     <div className={styles.main}>
       <div className={styles.sectionHeader}>
@@ -49,7 +55,7 @@ const BestSellersSection = () => {
 
       <div className={styles.productsContainer} ref={scrollRef}>
         {bestSellerProducts?.map((product, index) => (
-          <Product key={index} title={product.title} price={product.price} productId={product._id}/>
+          <Product key={index} product={product} wishListed={isWishListed(product._id)}/>
         ))}
       </div>
     </div>

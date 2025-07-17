@@ -13,7 +13,7 @@ router.route("/").get(getProducts);
 router.route("/:id").get(getProduct);
 router.route("/add/bulk").post(uploadWithMemory.fields([
     {name:"csv", maxCount:1},
-    {name:"images", maxCount:100}
+    // {name:"images", maxCount:100}
 ]),addBulkProducts);
 
 export default router;

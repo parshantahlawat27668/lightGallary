@@ -5,12 +5,6 @@ import Footer from '../../components/user/Footer'
 import axios from 'axios'
 import { setProducts } from '../../store/products'
 import { useDispatch } from 'react-redux'
-import ThemesSection from '../../sections/ThemesSection'
-import BestSellersSection from '../../sections/BestSellersSection'
-import NewArrivalSection from '../../sections/NewArrivalSection'
-import TopRatedSection from '../../sections/TopRatedSection'
-import CategorySection from '../../sections/CategorySection'
-import Product from '../../components/user/Product'
 import { Outlet } from 'react-router-dom'
 const UserLayout = () => {
     const dispatch = useDispatch();

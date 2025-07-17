@@ -1,7 +1,7 @@
 .main {
   position: relative;
   width: 100vw;
-  height: 400px;
+  height: 450px;
   overflow: hidden; /* Important: hide overflow during slide transition */
   background-color: aqua;
   display: flex;
@@ -25,6 +25,7 @@
   font-size: 32px;
   color: white;
   font-weight: bold;
+  position: relative;
 }
 
 .leftArrow, .rightArrow {
@@ -45,4 +46,26 @@
 
 .rightArrow {
   right: 10px;
+}
+.themeImage{
+  object-fit: cover;
+  width: 100%;
+  height: 450px;
+}
+.slideInfo{
+  position: absolute;
+  bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.821);
+}
+.heading{
+margin:0px;
+font-size: 40px;
+}
+.subHeading{
+margin:0px;
+font-size: 17px;
+font-weight: 600;
 }

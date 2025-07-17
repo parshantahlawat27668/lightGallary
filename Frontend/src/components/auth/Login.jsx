@@ -25,6 +25,7 @@ const Login = () => {
     .then((result)=>{
       const user = result.data.data.user;
       toast.success(result.data.message);
+      localStorage.setItem("activeUser",JSON.stringify(user));
       dispatch(loginSuccess(user));
       if(user.role==="admin"){
         navigate("/admin/dashboard");

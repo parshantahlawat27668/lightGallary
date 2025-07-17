@@ -31,12 +31,12 @@ const Header = () => {
         </div>
       </div>
       <div className={styles.nav2}>
-        <Link to="/shop/filter?category=indoor" className={styles.link}>Indoor Lights</Link>
-        <Link to="/shop/filter?category=outdoor" className={styles.link}>Outdoor Lights</Link>
-        <Link to="/shop/filter?category=decorative" className={styles.link}>Decorative Lights</Link>
-        <Link to="/shop/filter?category=smart" className={styles.link}>Smart Lights</Link>
+        <Link to="/shop/filter?category=Indoor lights" className={styles.link}>Indoor Lights</Link>
+        <Link to="/shop/filter?category=Outdoor lights" className={styles.link}>Outdoor Lights</Link>
+        <Link to="/shop/filter?category=Decorative lights" className={styles.link}>Decorative Lights</Link>
+        <Link to="/shop/filter?category=Smart lights" className={styles.link}>Smart Lights</Link>
         <Link to="/shop/filter?category=lamps" className={styles.link}>Lamps Lights</Link>
-        <Link to="/shop/filter?category=bulbs" className={styles.link}>Bulbs & Tubes Lights</Link>
+        <Link to="/shop/filter?category=Basic lights" className={styles.link}>Basic Lights</Link>
       </div>
 
 

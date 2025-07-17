@@ -161,12 +161,116 @@ const getProduct = asyncHandler(async (req, res) => {
         .json(new apiResponse(200, product, "Product fetched successfully"))
 });
 
+// const addBulkProducts = asyncHandler(async (req, res) => {
+//     const csvFile = req.files.csv?.[0];
+//     const imageFiles = req.files.images;
+
+//     if (!(csvFile && imageFiles)) {
+//         throw new apiError(400, "CSV  and image files are required");
+//     }
+
+//     const parsedCsvData = [];
+
+//     // ✅ Safe CSV parsing wrapped in a Promise
+//     try {
+//         await new Promise((resolve, reject) => {
+//             Readable.from(csvFile.buffer)
+//                 .pipe(csv())
+//                 .on("data", (row) => parsedCsvData.push(row))
+//                 .on("end", resolve)
+//                 .on("error", reject);
+//         });
+//     } catch (err) {
+//         throw new apiError(500, "CSV parsing failed");
+//     }
+
+//     const uploadStatus = [];
+
+//     // ✅ Loop through products
+//     await Promise.all(
+//         parsedCsvData.map(async (product) => {
+//             try {
+//                 // Step 1: Create specifications object
+//                 const specifications = {
+//                     wattage: product.wattage,
+//                     voltage: product.voltage,
+//                     colorTemperature: product.colorTemperature,
+//                     warranty: product.warranty
+//                 };
+//                 delete product.wattage;
+//                 delete product.voltage;
+//                 delete product.colorTemperature;
+//                 delete product.warranty;
+//                 product.specifications = specifications;
+
+//                 // Step 2: Find matching images
+//                 const frontImage = imageFiles.find((img) => img.originalname === product.frontImage);
+//                 const backImage = imageFiles.find((img) => img.originalname === product.backImage);
+
+//                 if (!frontImage || !backImage) {
+//                     uploadStatus.push({
+//                         success: false,
+//                         productTitle: product.title,
+//                         message: "Image not found"
+//                     });
+//                     return;
+//                 }
+
+//                 // Step 3: Upload to Cloudinary
+//                 const uploadedFrontImage = await uploadToCloudinary(frontImage.buffer, frontImage.originalname);
+//                 const uploadedBackImage = await uploadToCloudinary(backImage.buffer, backImage.originalname);
+
+//                 if (!uploadedFrontImage || !uploadedBackImage) {
+//                     uploadStatus.push({
+//                         success: false,
+//                         productTitle: product.title,
+//                         message: "Failed to upload to Cloudinary"
+//                     });
+//                     return;
+//                 }
+
+//                 // Step 4: Attach images and save to DB
+//                 delete product.frontImage;
+//                 delete product.backImage;
+//                 product.images = {
+//                     front: uploadedFrontImage,
+//                     back: uploadedBackImage
+//                 };
+
+//                 const savedProduct = await Product.create(product);
+//                 if (!savedProduct) {
+//                     uploadStatus.push({
+//                         success: false,
+//                         productTitle: product.title,
+//                         message: "DB save failed"
+//                     });
+//                 } else {
+//                     uploadStatus.push({
+//                         success: true,
+//                         productTitle: product.title,
+//                         message: "Uploaded successfully"
+//                     });
+//                 }
+//             } catch (err) {
+//                 uploadStatus.push({
+//                     success: false,
+//                     productTitle: product.title,
+//                     message: `Unexpected error: ${err.message}`
+//                 });
+//             }
+//         })
+//     );
+
+//     return res.status(201).json(
+//         new apiResponse(201, uploadStatus, "Bulk upload completed")
+//     );
+// });
+
+
 const addBulkProducts = asyncHandler(async (req, res) => {
     const csvFile = req.files.csv?.[0];
-    const imageFiles = req.files.images;
-
-    if (!(csvFile && imageFiles)) {
-        throw new apiError(400, "CSV  and image files are required");
+    if (!(csvFile)) {
+        throw new apiError(400, "CSV file is required");
     }
 
     const parsedCsvData = [];
@@ -197,45 +301,31 @@ const addBulkProducts = asyncHandler(async (req, res) => {
                     colorTemperature: product.colorTemperature,
                     warranty: product.warranty
                 };
+
+                const images = {
+                    front: {
+                        url: product.front_url,
+                        public_id: product.front_public_id,
+                        resource_type: product.resource_type
+                    },
+                    back: {
+                        url: product.back_url,
+                        public_id: product.back_public_id,
+                        resource_type: product.resource_type
+                    }
+                }
                 delete product.wattage;
                 delete product.voltage;
                 delete product.colorTemperature;
                 delete product.warranty;
+                delete product.front_url;
+                delete product.back_url;
+                delete product.resource_type;
+                delete product.front_public_id;
+                delete product.back_public_id;
+
                 product.specifications = specifications;
-
-                // Step 2: Find matching images
-                const frontImage = imageFiles.find((img) => img.originalname === product.frontImage);
-                const backImage = imageFiles.find((img) => img.originalname === product.backImage);
-
-                if (!frontImage || !backImage) {
-                    uploadStatus.push({
-                        success: false,
-                        productTitle: product.title,
-                        message: "Image not found"
-                    });
-                    return;
-                }
-
-                // Step 3: Upload to Cloudinary
-                const uploadedFrontImage = await uploadToCloudinary(frontImage.buffer, frontImage.originalname);
-                const uploadedBackImage = await uploadToCloudinary(backImage.buffer, backImage.originalname);
-
-                if (!uploadedFrontImage || !uploadedBackImage) {
-                    uploadStatus.push({
-                        success: false,
-                        productTitle: product.title,
-                        message: "Failed to upload to Cloudinary"
-                    });
-                    return;
-                }
-
-                // Step 4: Attach images and save to DB
-                delete product.frontImage;
-                delete product.backImage;
-                product.images = {
-                    front: uploadedFrontImage,
-                    back: uploadedBackImage
-                };
+                product.images = images;
 
                 const savedProduct = await Product.create(product);
                 if (!savedProduct) {
@@ -267,6 +357,7 @@ const addBulkProducts = asyncHandler(async (req, res) => {
 });
 
 
+
 export {
     addProduct,
     deleteProduct,
@@ -274,5 +365,5 @@ export {
     getProducts,
     getProduct,
     addBulkProducts
-    
+
 };

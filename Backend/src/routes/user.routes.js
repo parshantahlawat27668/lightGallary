@@ -5,7 +5,7 @@ import { authRoles } from "../middlewares/authRoles.middleware.js";
 import { loginUser, logoutUser, refreshAccessToken, registerUser } from "../controllers/user/auth.controller.js";
 import { getCurrentUser, getUsers } from "../controllers/user/admin.controller.js";
 import { emailVerification, phoneVerification, sendEmailVerificationCode } from "../controllers/user/verification.controller.js";
-import { deleteAccount, toggleWishlistProducts, updateUserAccountDetails } from "../controllers/user/profile.controller.js";
+import { addToCart, deleteAccount, getWishlist, toggleWishlistProducts, updateUserAccountDetails } from "../controllers/user/profile.controller.js";
 import { changeUserPassword, resetForgotPassword, sendForgotPasswordOtpToEmail, sendForgotPasswordOtpToPhone, verifyForgotPasswordOtpFromEmail, verifyForgotPasswordOtpFromPhone } from "../controllers/user/password.controller.js";
 import { registerAdmin } from "../controllers/user/devOnly.controller.js";
 const router = Router();
@@ -40,6 +40,8 @@ router.route("/verify-phone").post(phoneVerification);
 router.route("/update-user-details").patch(verifyJWT,updateUserAccountDetails);
 router.route("/delete-account").delete(verifyJWT,deleteAccount);
 router.route("/toggle-wishlist-products").patch(verifyJWT,toggleWishlistProducts);
+router.route("/wishlist").get(verifyJWT,getWishlist);
+router.route("/add-to-cart").patch(verifyJWT,addToCart);
 
 
 // Admin

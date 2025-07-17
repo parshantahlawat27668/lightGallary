@@ -11,9 +11,9 @@ import "./styles/toast.css";
 import VerifyOtp from './components/auth/VerifyOtp.jsx';
 import AdminLayout from './pages/admin/AdminLayout.jsx';
 import Dashboard from './components/admin/dashboard/Dashboard.jsx';
+import Orders from './components/admin/orders/Orders.jsx';
 import Stock from './components/admin/stock/Stock.jsx';
 import Users from './components/admin/users/Users.jsx';
-import Orders from './components/admin/orders/Orders.jsx';
 import ProductsLayout from './components/admin/products/ProductsLayout.jsx';
 import UserLayout from './pages/user/UserLayout.jsx';
 import ThemesSection from './sections/ThemesSection.jsx';
@@ -26,6 +26,7 @@ import Cart from './sections/Cart.jsx';
 import User from './sections/User.jsx';
 import FilterSection from './sections/FilterSection.jsx';
 import ProductSection from './sections/ProductSection.jsx';
+import OrderSection from './sections/OrderSection.jsx';
 const App = () => {
   const user = useSelector((state) => state.user.activeUser);
   return (
@@ -81,6 +82,7 @@ const App = () => {
           <Route path='product' element={<ProductSection/>}></Route>
           <Route path='user' element={<User />}></Route>
           <Route path='filter' element={<FilterSection/>}></Route>
+          <Route path='orders' element={<OrderSection/>}></Route>
         </Route>
 
       </Routes>
