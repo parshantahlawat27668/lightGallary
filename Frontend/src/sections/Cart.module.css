@@ -14,8 +14,9 @@
     display: flex;
     flex-direction: column;
     width: 80%;
-    max-height: 300px;
-    overflow: auto;
+    font-weight: 500;
+    /* max-height: 300px; */
+    /* overflow: auto; */
 }
 .titlesRow{
     display: flex;
@@ -34,7 +35,9 @@
 }
 .product{
 flex-basis: 50%;
-
+display: flex;
+align-items: center;
+gap:10px;
 }
 .quantity{
 flex-basis: 30%;
@@ -53,4 +56,7 @@ flex-basis: 20%;
 }
 .checkOutBtn{
     padding: 4px 25px;
+}
+.productImage{
+    width: 70px;
 }

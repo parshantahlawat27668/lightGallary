@@ -22,6 +22,7 @@
     "mongoose": "^8.15.2",
     "multer": "^2.0.1",
     "otp-generator": "^4.0.1",
+    "razorpay": "^2.9.6",
     "resend": "^4.6.0"
   }
 }

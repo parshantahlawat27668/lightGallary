@@ -73,7 +73,7 @@ const App = () => {
             <ThemesSection />
             <BestSellersSection />
             <NewArrivalSection /> 
-            <CategorySection />
+            {/* <CategorySection /> */}
           </>}>
           </Route>
           <Route path='wishlist' element={<Wishlist />}></Route>

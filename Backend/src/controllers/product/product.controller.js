@@ -128,7 +128,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 
 });
 
-const getProducts = asyncHandler(async (req, res) => {
+const getUserProducts = asyncHandler(async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 20
     const skip = (page - 1) * limit;
@@ -362,8 +362,7 @@ export {
     addProduct,
     deleteProduct,
     updateProduct,
-    getProducts,
+    getUserProducts,
     getProduct,
     addBulkProducts
-
 };

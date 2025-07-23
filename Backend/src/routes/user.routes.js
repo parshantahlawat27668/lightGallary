@@ -5,7 +5,7 @@ import { authRoles } from "../middlewares/authRoles.middleware.js";
 import { loginUser, logoutUser, refreshAccessToken, registerUser } from "../controllers/user/auth.controller.js";
 import { getCurrentUser, getUsers } from "../controllers/user/admin.controller.js";
 import { emailVerification, phoneVerification, sendEmailVerificationCode } from "../controllers/user/verification.controller.js";
-import { addToCart, deleteAccount, getWishlist, toggleWishlistProducts, updateUserAccountDetails } from "../controllers/user/profile.controller.js";
+import { addToCart, clearCartProducts, deleteAccount, getCartProducts, getWishlist, toggleWishlistProducts, updateUserAccountDetails } from "../controllers/user/profile.controller.js";
 import { changeUserPassword, resetForgotPassword, sendForgotPasswordOtpToEmail, sendForgotPasswordOtpToPhone, verifyForgotPasswordOtpFromEmail, verifyForgotPasswordOtpFromPhone } from "../controllers/user/password.controller.js";
 import { registerAdmin } from "../controllers/user/devOnly.controller.js";
 const router = Router();
@@ -42,11 +42,13 @@ router.route("/delete-account").delete(verifyJWT,deleteAccount);
 router.route("/toggle-wishlist-products").patch(verifyJWT,toggleWishlistProducts);
 router.route("/wishlist").get(verifyJWT,getWishlist);
 router.route("/add-to-cart").patch(verifyJWT,addToCart);
+router.route("/get-cart-products").get(verifyJWT, getCartProducts);
+router.route("/clear-cart-products").patch(verifyJWT,clearCartProducts);
 
 
 // Admin
 router.route("/:id").get(verifyJWT, authRoles("admin") ,getCurrentUser);
-router.route("/").get(verifyJWT,authRoles("admin"),getUsers);
+router.route("/").get(getUsers);
 
 // Developers only routes
 router.route("/register-admin").post(registerAdmin);

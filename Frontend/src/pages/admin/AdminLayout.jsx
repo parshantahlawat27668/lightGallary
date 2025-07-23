@@ -7,7 +7,11 @@ import { LuLampDesk } from "react-icons/lu";
 import { FaBoxOpen } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa";
 import logo from "../../assets/logo2.png"
+import axios from "axios"
+import {useDispatch} from "react-redux"
+import { setAdminProducts } from '../../store/adminProducts';
 const AdminLayout = () => {
+  
   return (
     <div className={styles.main}>
         <div className={styles.header}>

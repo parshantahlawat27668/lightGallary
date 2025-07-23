@@ -88,7 +88,6 @@ const addToCart = asyncHandler(async (req, res) => {
     const isExist = user.cart.find((product) => product.product.toString() === productId.toString());
 
     if (!isExist) {
-        console.log("error yahi hai");
         user.cart.push({ product: productId, quantity: quantity, price: product.price });
     }
 
@@ -108,6 +107,26 @@ const getCartProducts = asyncHandler(async(req, res)=>{
         $in:cartProductsId
     }});
 
+  
+    const productsWithQuantity =  products.map((product, index)=>{
+        const productObj = product.toObject();
+        productObj.quantity=cartProducts[index].quantity;
+        return productObj;
+    });
+
+    return res
+    .status(200)
+    .json(new apiResponse(200,productsWithQuantity,"Cart Products fetched successfully"))
+
+});
+
+const clearCartProducts = asyncHandler(async (req, res)=>{
+    const user = req.user;
+    user.cart = [];
+    const updatedUser = await user.save();
+    return res
+    .status(200)
+    .json(new apiResponse(200,{user:updatedUser},"Cart clear successfully"));
 });
 
 const removeFromCart = asyncHandler(async (req, res) => {
@@ -147,5 +166,7 @@ export {
     deleteAccount,
     toggleWishlistProducts,
     getWishlist,
-    addToCart
+    addToCart,
+    getCartProducts,
+    clearCartProducts
 }

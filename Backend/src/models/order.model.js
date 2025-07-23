@@ -6,13 +6,12 @@ const orderSchema = new mongoose.Schema({
     required: true
   },
 
-  orderItems: [{
+  products: [{
     product: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
       required: true
     },
-    title: { type: String },
     quantity: { type: Number, default: 1 },
     price: { type: Number }
   }],
@@ -23,14 +22,13 @@ const orderSchema = new mongoose.Schema({
     address: { type: String, required: true },
     city: { type: String, required: true },
     state: { type: String, required: true },
-    postalCode: { type: String, required: true },
-    country: { type: String, required: true, default: "India" }
+    pinCode: { type: String, required: true },
   },
 
   paymentMethod: {
     type: String,
-    enum: ["COD", "Online"],
-    default: "COD"
+    enum: ["cod", "cod"],
+    default: "cod"
   },
   paymentResult:{
     id:String,

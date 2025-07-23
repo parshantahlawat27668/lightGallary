@@ -61,8 +61,8 @@ const ProductSection = () => {
   const handleIncrement=()=>{
     setQuantity((prev)=>prev+1);
   }
-  const handleDecrement = ()=>{
-    if(quantity>0){
+  const handleDecrement = ()=>{ 
+    if(quantity>1){
       setQuantity((prev)=>prev-1);
     }
   }
@@ -75,7 +75,21 @@ const ProductSection = () => {
   }
 
   const handleBuyNow = () =>{
-    navigate("/shop/orders",{state:{productId}});
+    const productWithQuantity = {
+      _id:product._id,
+      title:product.title,
+      quantity:quantity,
+      images:product.images,
+      price:product.price,
+      specifications:product.specifications,
+      stock:product.stock,
+      category:product.category,
+      subCategory:product.subCategory,
+      brand:product.brand,
+      description:product.description,
+    };
+
+    navigate("/shop/orders",{state:{productsArray: [productWithQuantity]}});
   }
   return (
     <div className={styles.main}>
@@ -96,13 +110,13 @@ const ProductSection = () => {
         <p className={styles.price}>Rs. {product.price}</p>
         <label htmlFor="quantity" className={styles.quantity}>Quantity </label>
         <div style={{display:"flex", gap:"6px",marginBottom:"20px"}}>
-        <div className={styles.decrement}><LuMinus size={18} onClick={handleDecrement}/></div>
+        <div className={styles.decrement} onClick={handleDecrement}><LuMinus size={18} /></div>
         <input id='quantity' type='number' name='quantity' className={styles.quantityInput}min={1} value={quantity} onChange={(e)=>handleQuantityChange(e)}></input>
-        <div className={styles.increment} ><LuPlus size={18} onClick={handleIncrement}/></div>
+        <div className={styles.increment} onClick={handleIncrement}><LuPlus size={18} /></div>
         </div>
         <button className={styles.cartBtn} onClick={()=>handleAddToCart(product._id, quantity)}>ADD TO CART</button>
         <button className={styles.buyBtn} onClick={handleBuyNow}>BUY IT NOW</button> 
-      </div>
+      </div>  
       </div>
     </div>
   )

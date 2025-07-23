@@ -9,7 +9,7 @@ import { Outlet } from 'react-router-dom'
 const UserLayout = () => {
     const dispatch = useDispatch();
     const fetchProducts = async()=>{
-       await axios.get("http://localhost:8000/api/v1/products")
+       await axios.get("http://localhost:8000/api/v1/products/user")
        .then((result)=>{
         dispatch(setProducts(result.data.data.products));
        })

@@ -5,6 +5,7 @@
     border-radius: 5px;
 }
 
+
 .main{
     display: flex;
     flex-direction: row;
@@ -39,14 +40,20 @@
 .products{
     display: flex;
     flex-direction: column;
+    gap:8px;
 }
 .product{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+}
+.product p{
+    margin: 0px;
+    font-size: 13px;
 }
 .productImg{
-    width: 70px;
+    width: 50px;
 }
 .group{
     display: flex;

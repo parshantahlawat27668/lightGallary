@@ -19,7 +19,7 @@ const Wishlist = () => {
         })
     }
     getWishlist();
-  },);
+  },[],);
 
 // is WishListed logic
 const user = useSelector((state)=>state.user.activeUser);
